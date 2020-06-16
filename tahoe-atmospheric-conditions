@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <!--
+    Code Created By Brian Wiebe : 2019 : Age 15
+    Enjoy.
+    -->
+	<head>
+        <title>Tahoe Atmospheric Conditions</title>
+        <meta property="og:image" content="http://technicallyinclined.org/wp-content/uploads/2019/08/IMG_6981-1.jpg" />
+        <!--Follows UCD Guidlines-->
+        <style> 
+            .blueTERCtitle{
+                color: rgb(50, 84, 120);
+                font-size: 30pt;
+            }
+            .blueTERC{
+                color: rgb(50, 84, 120);
+                font-size: 26pt;
+            }
+            a {
+                color: rgb(50, 84, 120);
+            }
+            body{
+                font-family: 'proxima-nova', sans-serif;
+                color:black;
+            }
+            .smallSC{
+                font-size: 10pt;
+                font-weight: normal;
+            }
+            .header2{
+                font-size: 21pt;
+                color:black;
+            }
+            .header3{
+                font-size: 15pt;
+                color:black;
+            }
+            .myP {
+              font-size: 14pt;
+              font-weight: bold;
+              color:black;
+            }
+            ul {
+                color:black;
+            }
+            .updateFont{
+                font-size: 12pt;
+                font-weight: normal;
+
+            }
+            td{
+                text-align: center;
+            }
+            th{
+                text-align: center;
+            }
+            .header4{
+                font-size: 17pt;
+                color:black;
+            }
+        </style>
+	</head>
+
+	<body>
+        <p class="header3">Atmospheric conditions such as Ultraviolet Index, Air Quality Index, and Particulate Matter (PM) 2.5 can help researchers find the root cause of changes in Lake Tahoe. Being aware of changes in atmospheric conditions can also impact recreation and potentially effect people sensitive to air quality issues. View the current conditions in the Tahoe Basin below. The UV Index is updated every hour and the AQI is updated approximately every two minutes.</p>
+        <hr>
+        <h2 class=blueTERC>Ultraviolet Index</h1>
+        <p class="header3">UV Index is a measurement of certain measures of ultra-violet rays that are harmful to human skin. The higher the UV Index, the more likely an individual will receive a sunburn.</p>
+        
+        <p class="myP">UV Index in the Tahoe Basin: <span id="uvi"></span></p>
+        <p class=updateFont>UVI Last Updated: <span id="lastUpdateUVI"></span></p>
+        <img width="50%" height="50%" src="http://technicallyinclined.org/wp-content/uploads/2019/07/UCD-TERC-UVI-Chart.jpg">
+        <br>
+        <hr>
+            
+            <h2 class=blueTERC>Air Quality Index for the Tahoe Basin</h2>
+            <p class="header3">The air quality in Tahoe is usually spectacular, but when smoke comes into the basin, air can become quite hazardous.</h2>
+            <p class="header3">Air Quality Index is a measurement system that shows how clean or polluted the air is around you. Look at the chart below to understand the levels of the air quality index.</h2>
+            <p class="header3">PM2.5 stands for the particulate matter (PM) in the atmosphere that has a diameter of 2.5 micrometers or smaller, which is about half the diameter of a human blood cell. These particles are harmful to humans because they stay in the air longer allowing more of them to be inhaled. These particles are so small that many of them bypass the protective measures that are in the nose and throat, causing them to enter into the lungs. (μg/m<sup>3</sup> means micrograms per meters cubed).</p>
+            
+            <table border='1' bordercolor='#8192A3'>
+                <tr>
+                    <th>Location</th>
+                    <th>Air Quality Index</th>
+                    <th>PM 2.5 Value (μg/m<sup>3</sup>)</th>
+                    <th>Levels of Health Concern</th>
+                </tr>
+                <tr>
+                    <td>Incline Village:</td>
+                    <td id="IVAQI"></td>
+                    <td id="IVPM"></td>
+                    <td id="IVLVL"></span></td>
+                </tr>
+                <tr>
+                    <td>Homewood:</td>
+                    <td id="HWAQI"></span></td>
+                    <td id="HWPM"></span></td>
+                    <td id="HWLVL"></span></td>
+                </tr>
+                <tr>
+                    <td>Tahoe Keys:</td>
+                    <td id="TKAQI"></span></td>
+                    <td id="TKPM"></span></td>
+                    <td id="TKLVL"></span></td>
+                </tr>
+                <tr>
+                    <td>Glenbrook:</td>
+                    <td id="GBAQI"></span></td>
+                    <td id="GBPM"></span></td>
+                    <td id="GBLVL"></span></td>
+                </tr>
+                <tr>
+                    <td>Rubicon Bay:</td>
+                    <td id="RBAQI"></span></td>
+                    <td id="RBPM"></span></td>
+                    <td id="RBLVL"></span></td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <td><img width="100%" height="100%" src="http://technicallyinclined.org/wp-content/uploads/2019/08/Screen-Shot-2019-08-13-at-11.04.02-AM.png"></img></td>
+                    <td><img width="100%" height="100%" src="http://technicallyinclined.org/wp-content/uploads/2019/08/Screen-Shot-2019-08-13-at-11.03.56-AM.png"></img></td>
+                </tr>
+            </table>
+            <p class=updateFont>AQI Last Updated: <span id="lastUpdateAQI"></span></p>
+            <p class=smallSC>Sensor data provided by PurpleAir</p>
+            <p class=smallSC>Page created by Brian Wiebe</p> 
+            <script>
+                    const getData1 = () =>
+                        fetch('https://www.purpleair.com/json?show=13165')
+                            .then(serverResponse => serverResponse.json())
+                            .then(arr => {
+                                const wanted = arr.results[0]
+                                wanted.Stats = JSON.parse(wanted.Stats);
+                                return wanted
+                            })
+                            
+                        getData1().then(item =>{
+                            if(item.AGE < 10){
+                                    let vs = item.PM2_5Value;
+                                    document.getElementById('IVPM').innerHTML = vs;
+                                    document.getElementById('IVAQI').innerHTML = aqiFromPM(vs,'IVAQI','IVPM',"IVLVL")
+                                }else{
+                                    document.getElementById('IVPM').innerHTML = "Offline";
+                                    document.getElementById('IVPM').style.backgroundColor = "#808080";
+                                    document.getElementById('IVAQI').innerHTML = "Offline";
+                                    document.getElementById('IVAQI').style.backgroundColor = "#808080";
+                                    document.getElementById('IVLVL').innerHTML = "Offline";
+                                    document.getElementById('IVLVL').style.backgroundColor = "#808080";
+                                }
+                            })
+
+                    const getData2 = () =>
+                        fetch('https://www.purpleair.com/json?show=4452')
+                            .then(serverResponse => serverResponse.json())
+                            .then(arr => {
+                                const wanted = arr.results[0]
+                                wanted.Stats = JSON.parse(wanted.Stats);
+                                return wanted
+                            })
+                            
+                        getData2().then(item =>{
+                            if(item.AGE < 10){
+                                    let vs = item.PM2_5Value;
+                                    document.getElementById('HWPM').innerHTML = vs;
+                                    document.getElementById('HWAQI').innerHTML = aqiFromPM(vs,'HWAQI','HWPM',"HWLVL")
+                                }else{
+                                    document.getElementById('HWPM').innerHTML = "Offline";
+                                    document.getElementById('HWPM').style.backgroundColor = "#808080";
+                                    document.getElementById('HWAQI').innerHTML = "Offline";
+                                    document.getElementById('HWAQI').style.backgroundColor = "#808080";
+                                    document.getElementById('HWLVL').innerHTML = "Offline";
+                                    document.getElementById('HWLVL').style.backgroundColor = "#808080";
+                                }
+                            })
+                    const getData3 = () =>
+                        fetch('https://www.purpleair.com/json?show=18421')
+                            .then(serverResponse => serverResponse.json())
+                            .then(arr => {
+                                const wanted = arr.results[0]
+                                wanted.Stats = JSON.parse(wanted.Stats);
+                                return wanted
+                            })
+                            
+                        getData3().then(item =>{
+                            if(item.AGE < 10){
+                                    let vs = item.PM2_5Value;
+                                    document.getElementById('TKPM').innerHTML = vs;
+                                    document.getElementById('TKAQI').innerHTML = aqiFromPM(vs,'TKAQI','TKPM',"TKLVL")
+                                }else{
+                                    document.getElementById('TKPM').innerHTML = "Offline";
+                                    document.getElementById('TKPM').style.backgroundColor = "#808080";
+                                    document.getElementById('TKAQI').innerHTML = "Offline";
+                                    document.getElementById('TKAQI').style.backgroundColor = "#808080";
+                                    document.getElementById('TKLVL').innerHTML = "Offline";
+                                    document.getElementById('TKLVL').style.backgroundColor = "#808080";
+                                }
+                            })
+                    const getData4 = () =>
+                        fetch('https://www.purpleair.com/json?show=39961')
+                            .then(serverResponse => serverResponse.json())
+                            .then(arr => {
+                                const wanted = arr.results[0]
+                                wanted.Stats = JSON.parse(wanted.Stats);
+                                return wanted
+                            })
+                            
+                        getData4().then(item =>{
+                            if(item.AGE <10){
+                                    let vs = item.PM2_5Value;
+                                    document.getElementById('GBPM').innerHTML = vs;
+                                    document.getElementById('GBAQI').innerHTML = aqiFromPM(vs,'GBAQI','GBPM',"GBLVL")
+                                }else{
+                                    document.getElementById('GBPM').innerHTML = "Offline";
+                                    document.getElementById('GBPM').style.backgroundColor = "#808080";
+                                    document.getElementById('GBAQI').innerHTML = "Offline";
+                                    document.getElementById('GBAQI').style.backgroundColor = "#808080";
+                                    document.getElementById('GBLVL').innerHTML = "Offline";
+                                    document.getElementById('GBLVL').style.backgroundColor = "#808080";
+                                }
+                            })
+
+                    const getData5 = () =>
+                        fetch('https://www.purpleair.com/json?show=13183')
+                            .then(serverResponse => serverResponse.json())
+                            .then(arr => {
+                                const wanted = arr.results[0]
+                                wanted.Stats = JSON.parse(wanted.Stats);
+                                return wanted
+                            })
+                            
+                        getData5().then(item =>{
+                            if(item.AGE <= 10){
+                                    let vs = item.PM2_5Value;
+                                    document.getElementById('RBPM').innerHTML = vs;
+                                    document.getElementById('RBAQI').innerHTML = aqiFromPM(vs,'RBAQI','RBPM',"RBLVL")
+                                }else if(item.AGE >= 10){
+                                    document.getElementById('RBPM').innerHTML = "Offline";
+                                    document.getElementById('RBPM').style.backgroundColor = "#808080";
+                                    document.getElementById('RBAQI').innerHTML = "Offline";
+                                    document.getElementById('RBAQI').style.backgroundColor = "#808080";
+                                    document.getElementById('RBLVL').innerHTML = "Offline";
+                                    document.getElementById('RBLVL').style.backgroundColor = "#808080";
+                                }
+                            })
+
+                    function aqiFromPM(pm,id,idpm,idlvl) {
+                        if (isNaN(pm)) return "-"; 
+                        if (pm == undefined) return "No Information Found";
+                        if (pm < 0) return pm; 
+                        if (pm > 1000) return "-"; 
+                        /*      
+                                Good                              0 - 50         0.0 - 15.0         0.0 – 12.0
+                        Moderate                        51 - 100           >15.0 - 40        12.1 – 35.4
+                        Unhealthy for Sensitive Groups   101 – 150     >40 – 65          35.5 – 55.4
+                        Unhealthy                                 151 – 200         > 65 – 150       55.5 – 150.4
+                        Very Unhealthy                    201 – 300 > 150 – 250     150.5 – 250.4
+                        Hazardous                                 301 – 400         > 250 – 350     250.5 – 350.4
+                        Hazardous                                 401 – 500         > 350 – 500     350.5 – 500
+                        */
+                        if (pm > 350.5) {
+                            document.getElementById(id).style.backgroundColor = "#63231F";
+                            document.getElementById(idpm).style.backgroundColor = "#63231F";
+                            document.getElementById(id).style.Color = "#ffffff";
+                            document.getElementById(idpm).style.Color = "#ffffff";
+                            document.getElementById(idlvl).style.backgroundColor = "#63231F";
+                            document.getElementById(idlvl).innerHTML = "Hazardous";
+                            return calcAQI(pm, 500, 401, 500, 350.5);
+                        } else if (pm > 250.5) {
+                            document.getElementById(id).style.backgroundColor = "#67349B";
+                            document.getElementById(idpm).style.backgroundColor = "#67349B";
+                            document.getElementById(id).style.Color = "#ffffff";
+                            document.getElementById(idpm).style.Color = "#ffffff";
+                            document.getElementById(idlvl).style.backgroundColor = "#67349B";
+                            document.getElementById(idlvl).innerHTML = "Very Unhealthy";
+                            return calcAQI(pm, 400, 301, 350.4, 250.5);
+                        } else if (pm > 150.5) {
+                            document.getElementById(id).style.backgroundColor = "#67349B";
+                            document.getElementById(idpm).style.backgroundColor = "#67349B";
+                            document.getElementById(id).style.Color = "#ffffff";
+                            document.getElementById(idpm).style.Color = "#ffffff";
+                            document.getElementById(idlvl).style.backgroundColor = "#67349B";
+                            document.getElementById(idlvl).innerHTML = "Very Unhealthy";
+                            return calcAQI(pm, 300, 201, 250.4, 150.5);
+                        } else if (pm > 55.5) {
+                            document.getElementById(id).style.backgroundColor = "#E93423";
+                            document.getElementById(idpm).style.backgroundColor = "#E93423";
+                            document.getElementById(id).style.Color = "#ffffff";
+                            document.getElementById(idpm).style.Color = "#ffffff";
+                            document.getElementById(idlvl).innerHTML = "Unhealthy";
+                            document.getElementById(idlvl).style.backgroundColor = "#E93423";
+                            return calcAQI(pm, 200, 151, 150.4, 55.5);
+                        } else if (pm > 35.5) {
+                            document.getElementById(id).style.backgroundColor = "#DF8443";
+                            document.getElementById(idpm).style.backgroundColor = "#DF8443";
+                            document.getElementById(id).style.Color = "#ffffff";
+                            document.getElementById(idpm).style.Color = "#ffffff";
+                            document.getElementById(idlvl).innerHTML = "Unhealthy for Sensitive Groups";
+                            document.getElementById(idlvl).style.backgroundColor = "#DF8443";
+                            return calcAQI(pm, 150, 101, 55.4, 35.5);
+                        } else if (pm > 12.1) {
+                            document.getElementById(id).style.backgroundColor = "#e8da23";
+                            document.getElementById(idpm).style.backgroundColor = "#e8da23";
+                            document.getElementById(idlvl).innerHTML = "Moderate";
+                            document.getElementById(idlvl).style.backgroundColor = "#e8da23";
+                            return calcAQI(pm, 100, 51, 35.4, 12.1);
+                        } else if (pm >= 0) {
+                            document.getElementById(id).style.backgroundColor = "#68C875";
+                            document.getElementById(idpm).style.backgroundColor = "#68C875";
+                            document.getElementById(idlvl).innerHTML = "Good";
+                            document.getElementById(idlvl).style.backgroundColor = "#68C875";
+                            return calcAQI(pm, 50, 0, 12, 0);
+                        } else {
+                            return document.getElementById(id).style.backgroundColor = "#808080";
+                            document.getElementById(idpm).style.backgroundColor = "#808080";
+                            document.getElementById(idlvl).innerHTML = "Offline";
+                            document.getElementById(idlvl).style.backgroundColor = "#808080";
+                            return "Offline";
+                        }
+                        }
+                    function calcAQI(Cp, Ih, Il, BPh, BPl) {
+                        var a = (Ih - Il);
+                        var b = (BPh - BPl);
+                        var c = (Cp - BPl);
+                        return Math.round((a/b) * c + Il);
+                        }
+
+                    console.log(IVAQI)
+                    console.log(IVPM)
+                </script>
+		<script>
+        (async function() {
+            // modified fetchURL() - the URL parameter is passed to
+            // the API query function
+            const data = await fetchURL(urlToQuery())
+
+            // calling calcUVI() function with the first data
+            // entry of the data array
+            const UVIraw = calcUVI(data[0])
+            const UVI = UVIraw.toFixed(0)
+            var d = data[0].TmStamp
+            var mydate = new Date();
+            console.log(d);
+            var offset = mydate.getTimezoneOffset() / 60;
+            mydate.setFullYear(d.substr(0, 4));
+            mydate.setMonth(d.substr(5, 2)-1);
+            if (d.substr(8, 2) >= (24-offset)){
+                mydate.setDate(Number(d.substr(8, 2)));
+            }else{
+                mydate.setDate(d.substr(8, 2)-1);
+            }
+            mydate.setHours(d.substr(11, 2)-offset);
+            mydate.setMinutes(d.substr(14, 2));
+            mydate.setSeconds(00);
+
+            const da = new Date();
+            // displaying result in the console
+            if (UVI >=11){
+                document.getElementById('uvi').style.backgroundColor = "#FE0000";
+            }
+            if (UVI < 11){
+                document.getElementById('uvi').style.backgroundColor = "#FF7200";
+            }
+            if (UVI < 8){
+                document.getElementById('uvi').style.backgroundColor = "#FFD249";
+            }
+            if (UVI < 6){
+                document.getElementById('uvi').style.backgroundColor = "#FFF347";
+            }
+            if (UVI < 3){
+                document.getElementById('uvi').style.backgroundColor = "#00FF01";
+            }
+            document.getElementById('uvi').innerHTML = UVI
+            document.getElementById('lastUpdateUVI').innerHTML = mydate
+            document.getElementById('lastUpdateAQI').innerHTML = da
+            })();
+
+            function fetchURL(url) {
+            return new Promise((resolve, reject) => {
+                // the url parameter is received when the function
+                // is called - it's not a constant anymore
+                fetch(url)
+                .then(r => {
+                    resolve(r.json())
+                })
+                .catch(err => {
+                    reject(err)
+                })
+            })
+            }
+
+            // creating and returning the API URL dynamically -
+            // date string is added
+            function urlToQuery() {
+            // the query URL base is here - and the date string
+            // at the end is created dynamically
+            return `https://cors-anywhere.herokuapp.com/https://tepfsail50.execute-api.us-west-2.amazonaws.com/v1/report/metguv?rptdate=${getDateString()}`
+            }
+
+            // creating and returning the date string
+            function getDateString() {
+            const d = new Date();
+            if(d.getHours()>=17){
+                return `${d.getFullYear()}${('0' + (d.getMonth() + 1)).slice(-2)}${('0' + (d.getDate()+1)).slice(-2)}`
+            }else if(d.getHours()<17){
+                return `${d.getFullYear()}${('0' + (d.getMonth() + 1)).slice(-2)}${('0' + d.getDate()).slice(-2)}`
+            }
+        }
+
+            // calcUVI receives the parameters destructured from
+            // the first element of the array (it's called in
+            // the main async function)
+            function calcUVI({
+            Ed0305,
+            Ed0313,
+            Ed0320,
+            Ed0340
+            }) {
+            // no need to store these elements as variables, as the single
+            // Ed... values are not used anymore in the process (a
+            // total is returned, so just add them up)
+            return Ed0305 * 0.8058 + Ed0313 * 0.0887 + Ed0320 * 0.0324 + Ed0340 * 0.0131
+            }
+        </script>
+	</body>
+</html>
