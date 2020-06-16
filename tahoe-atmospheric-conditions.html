@@ -407,19 +407,12 @@
                 return `${d.getFullYear()}${('0' + (d.getMonth() + 1)).slice(-2)}${('0' + d.getDate()).slice(-2)}`
             }
         }
-
-            // calcUVI receives the parameters destructured from
-            // the first element of the array (it's called in
-            // the main async function)
             function calcUVI({
             Ed0305,
             Ed0313,
             Ed0320,
             Ed0340
             }) {
-            // no need to store these elements as variables, as the single
-            // Ed... values are not used anymore in the process (a
-            // total is returned, so just add them up)
             return Ed0305 * 0.8058 + Ed0313 * 0.0887 + Ed0320 * 0.0324 + Ed0340 * 0.0131
             }
         </script>
