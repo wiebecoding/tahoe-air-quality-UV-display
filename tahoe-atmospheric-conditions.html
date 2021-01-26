@@ -127,18 +127,26 @@
             <p class=smallSC>Sensor data provided by PurpleAir</p>
             <p class=smallSC>Page created by Brian Wiebe</p> 
             <script>
+                var wanted;
+                var time;
                     const getData1 = () =>
-                        fetch('https://www.purpleair.com/json?show=13165')
+                        fetch('https://api.purpleair.com/v1/sensors/13165',{
+                            headers: {
+                                'X-API-Key': 'A11DF3C2-399D-11EB-9893-42010A8001E8',
+                            },
+                        })
                             .then(serverResponse => serverResponse.json())
                             .then(arr => {
-                                const wanted = arr.results[0]
-                                wanted.Stats = JSON.parse(wanted.Stats);
-                                return wanted
+                                wanted = arr.sensor.stats_a["pm2.5"];
+                                time = arr.sensor.stats_a['time_stamp'];
+                                wanted = JSON.parse(wanted);
+                                time = JSON.parse(time);
                             })
                             
                         getData1().then(item =>{
-                            if(item.AGE < 10){
-                                    let vs = item.PM2_5Value;
+                            var unix = Math.round(+new Date()/1000);
+                                if(unix - time < 3600){
+                                    let vs = wanted;
                                     document.getElementById('IVPM').innerHTML = vs;
                                     document.getElementById('IVAQI').innerHTML = aqiFromPM(vs,'IVAQI','IVPM',"IVLVL")
                                 }else{
@@ -149,20 +157,37 @@
                                     document.getElementById('IVLVL').innerHTML = "Offline";
                                     document.getElementById('IVLVL').style.backgroundColor = "#808080";
                                 }
+                                var a = new Date(time * 1000);
+                                var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+                                var year = a.getFullYear();
+                                var month = months[a.getMonth()];
+                                var date = a.getDate();
+                                var hour = a.getHours();
+                                var min = a.getMinutes();
+                                var sec = a.getSeconds();
+                                time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
+                                document.getElementById('lastUpdateAQI').innerHTML = time;
                             })
-
+                            var wanted;
+                var time;
                     const getData2 = () =>
-                        fetch('https://www.purpleair.com/json?show=4452')
+                        fetch('https://api.purpleair.com/v1/sensors/4452',{
+                            headers: {
+                                'X-API-Key': 'A11DF3C2-399D-11EB-9893-42010A8001E8',
+                            },
+                        })
                             .then(serverResponse => serverResponse.json())
                             .then(arr => {
-                                const wanted = arr.results[0]
-                                wanted.Stats = JSON.parse(wanted.Stats);
-                                return wanted
+                                wanted = arr.sensor.stats_a["pm2.5"];
+                                time = arr.sensor.stats_a['time_stamp'];
+                                wanted = JSON.parse(wanted);
+                                time = JSON.parse(time);
                             })
                             
                         getData2().then(item =>{
-                            if(item.AGE < 10){
-                                    let vs = item.PM2_5Value;
+                            var unix = Math.round(+new Date()/1000);
+                                if(unix - time < 3600){
+                                    let vs = wanted;
                                     document.getElementById('HWPM').innerHTML = vs;
                                     document.getElementById('HWAQI').innerHTML = aqiFromPM(vs,'HWAQI','HWPM',"HWLVL")
                                 }else{
@@ -174,18 +199,26 @@
                                     document.getElementById('HWLVL').style.backgroundColor = "#808080";
                                 }
                             })
+                var wanted;
+                var time;
                     const getData3 = () =>
-                        fetch('https://www.purpleair.com/json?show=18421')
+                        fetch('https://api.purpleair.com/v1/sensors/18421',{
+                            headers: {
+                                'X-API-Key': 'A11DF3C2-399D-11EB-9893-42010A8001E8',
+                            },
+                        })
                             .then(serverResponse => serverResponse.json())
                             .then(arr => {
-                                const wanted = arr.results[0]
-                                wanted.Stats = JSON.parse(wanted.Stats);
-                                return wanted
+                                wanted = arr.sensor.stats_a["pm2.5"];
+                                time = arr.sensor.stats_a['time_stamp'];
+                                wanted = JSON.parse(wanted);
+                                time = JSON.parse(time);
                             })
                             
                         getData3().then(item =>{
-                            if(item.AGE < 10){
-                                    let vs = item.PM2_5Value;
+                            var unix = Math.round(+new Date()/1000);
+                                if(unix - time < 3600){
+                                    let vs = wanted;
                                     document.getElementById('TKPM').innerHTML = vs;
                                     document.getElementById('TKAQI').innerHTML = aqiFromPM(vs,'TKAQI','TKPM',"TKLVL")
                                 }else{
@@ -197,18 +230,27 @@
                                     document.getElementById('TKLVL').style.backgroundColor = "#808080";
                                 }
                             })
+
+                var wanted;
+                var time;
                     const getData4 = () =>
-                        fetch('https://www.purpleair.com/json?show=39961')
+                        fetch('https://api.purpleair.com/v1/sensors/39961',{
+                            headers: {
+                                'X-API-Key': 'A11DF3C2-399D-11EB-9893-42010A8001E8',
+                            },
+                        })
                             .then(serverResponse => serverResponse.json())
                             .then(arr => {
-                                const wanted = arr.results[0]
-                                wanted.Stats = JSON.parse(wanted.Stats);
-                                return wanted
+                                wanted = arr.sensor.stats_a["pm2.5"];
+                                time = arr.sensor.stats_a['time_stamp'];
+                                wanted = JSON.parse(wanted);
+                                time = JSON.parse(time);
                             })
                             
                         getData4().then(item =>{
-                            if(item.AGE <10){
-                                    let vs = item.PM2_5Value;
+                            var unix = Math.round(+new Date()/1000);
+                                if(unix - time < 3600){
+                                    let vs = wanted;
                                     document.getElementById('GBPM').innerHTML = vs;
                                     document.getElementById('GBAQI').innerHTML = aqiFromPM(vs,'GBAQI','GBPM',"GBLVL")
                                 }else{
@@ -221,18 +263,26 @@
                                 }
                             })
 
+                var wanted;
+                var time;
                     const getData5 = () =>
-                        fetch('https://www.purpleair.com/json?show=13183')
+                        fetch('https://api.purpleair.com/v1/sensors/13183',{
+                            headers: {
+                                'X-API-Key': 'A11DF3C2-399D-11EB-9893-42010A8001E8',
+                            },
+                        })
                             .then(serverResponse => serverResponse.json())
                             .then(arr => {
-                                const wanted = arr.results[0]
-                                wanted.Stats = JSON.parse(wanted.Stats);
-                                return wanted
+                                wanted = arr.sensor.stats_a["pm2.5"];
+                                time = arr.sensor.stats_a['time_stamp'];
+                                wanted = JSON.parse(wanted);
+                                time = JSON.parse(time);
                             })
                             
                         getData5().then(item =>{
-                            if(item.AGE <= 10){
-                                    let vs = item.PM2_5Value;
+                            var unix = Math.round(+new Date()/1000);
+                                if(unix - time < 3600){
+                                    let vs = wanted;
                                     document.getElementById('RBPM').innerHTML = vs;
                                     document.getElementById('RBAQI').innerHTML = aqiFromPM(vs,'RBAQI','RBPM',"RBLVL")
                                 }else if(item.AGE >= 10){
@@ -244,7 +294,7 @@
                                     document.getElementById('RBLVL').style.backgroundColor = "#808080";
                                 }
                             })
-
+                            
                     function aqiFromPM(pm,id,idpm,idlvl) {
                         if (isNaN(pm)) return "-"; 
                         if (pm == undefined) return "No Information Found";
@@ -326,8 +376,6 @@
                         return Math.round((a/b) * c + Il);
                         }
 
-                    console.log(IVAQI)
-                    console.log(IVPM)
                 </script>
 		<script>
         (async function() {
@@ -341,7 +389,6 @@
             const UVI = UVIraw.toFixed(0)
             var d = data[0].TmStamp
             var mydate = new Date();
-            console.log(d);
             var offset = mydate.getTimezoneOffset() / 60;
             mydate.setFullYear(d.substr(0, 4));
             mydate.setMonth(d.substr(5, 2)-1);
@@ -355,7 +402,6 @@
             mydate.setSeconds(00);
 
             const da = new Date();
-            // displaying result in the console
             if (UVI >=11){
                 document.getElementById('uvi').style.backgroundColor = "#FE0000";
             }
