@@ -318,12 +318,12 @@
                             document.getElementById(idlvl).innerHTML = "Hazardous";
                             return calcAQI(pm, 500, 401, 500, 350.5);
                         } else if (pm > 250.5) {
-                            document.getElementById(id).style.backgroundColor = "#67349B";
-                            document.getElementById(idpm).style.backgroundColor = "#67349B";
+                            document.getElementById(id).style.backgroundColor = "#63231F";
+                            document.getElementById(idpm).style.backgroundColor = "#63231F";
                             document.getElementById(id).style.Color = "#ffffff";
                             document.getElementById(idpm).style.Color = "#ffffff";
-                            document.getElementById(idlvl).style.backgroundColor = "#67349B";
-                            document.getElementById(idlvl).innerHTML = "Very Unhealthy";
+                            document.getElementById(idlvl).style.backgroundColor = "#63231F";
+                            document.getElementById(idlvl).innerHTML = "Hazardous";
                             return calcAQI(pm, 400, 301, 350.4, 250.5);
                         } else if (pm > 150.5) {
                             document.getElementById(id).style.backgroundColor = "#67349B";
@@ -382,7 +382,9 @@
             // modified fetchURL() - the URL parameter is passed to
             // the API query function
             const data = await fetchURL(urlToQuery())
-
+            if (data == ""){
+                document.getElementById('uvi').innerHTML = "OFFLINE"
+            }
             // calling calcUVI() function with the first data
             // entry of the data array
             const UVIraw = calcUVI(data[0])
@@ -417,9 +419,13 @@
             if (UVI < 3){
                 document.getElementById('uvi').style.backgroundColor = "#00FF01";
             }
-            document.getElementById('uvi').innerHTML = UVI
-            document.getElementById('lastUpdateUVI').innerHTML = mydate
-            document.getElementById('lastUpdateAQI').innerHTML = da
+            if (data == ""){
+                document.getElementById('uvi').innerHTML = "OFFLINE"
+            }else{
+                document.getElementById('uvi').innerHTML = UVI
+                document.getElementById('lastUpdateUVI').innerHTML = mydate
+                document.getElementById('lastUpdateAQI').innerHTML = da
+            }
             })();
 
             function fetchURL(url) {
